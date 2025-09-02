@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+        <!-- Header com Navegação (visível apenas após login) -->
+    <header id="main-header" style="display: none;">
+        <div class="container">
+            <nav>
+                <div class="logo"><i class="fas fa-heartbeat"></i> Saúde Total</div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="about">Quem Somos</a></li>
+                    <li><a href="#" class="nav-link" data-page="appointment">Agendar Consulta</a></li>
+                    <li><a href="#" class="nav-link" data-page="crud">Meus Agendamentos</a></li>
+                </ul>
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username-display">Usuário</span>
+                    <button class="btn btn-logout" id="logout-btn">Sair</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Página de Login (inicialmente visível) -->
+    <div class="login-container" id="login-page">
+        <div class="login-box">
+            <div class="login-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>Login - Clínica Saúde Total</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" id="login-email" placeholder="Seu e-mail" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Sua senha" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Entrar</button>
+            </form>
+            <p style="margin-top: 1.5rem;">
+                Não tem uma conta? <a href="#" id="show-register">Cadastre-se aqui</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Página de Cadastro (inicialmente oculta) -->
+    <div class="login-container" id="register-page" style="display: none;">
+        <div class="login-box">
+            <div class="login-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h2>Criar Conta</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <input type="text" id="register-name" placeholder="Seu nome completo" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="register-email" placeholder="Seu e-mail" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="register-password" placeholder="Sua senha" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="register-confirm" placeholder="Confirme sua senha" required>
+                    <div class="error" id="confirm-error">As senhas não coincidem</div>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Cadastrar</button>
+            </form>
+            <p style="margin-top: 1.5rem;">
+                Já tem uma conta? <a href="#" id="show-login">Fazer login</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal (visível apenas após login) -->
+    <div id="main-content" style="display: none;">
+        <!-- Página Inicial -->
+        <div class="page active" id="home">
+            <section class="hero">
+                <div class="container">
+                    <h1>Bem-vindo à Clínica Saúde Total</h1>
+                    <p>Agende sua consulta de forma rápida e fácil com nosso sistema online. Cuide da sua saúde com praticidade.</p>
+                    <a href="#" class="btn btn-appointment">Agendar Consulta</a>
+                </div>
+            </section>
+
+            <section class="features">
+                <div class="container">
+                    <h2 class="section-title">Nossos Serviços</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-calendar-check"></i></div>
+                            <h3>Agendamento Online</h3>
+                            <p>Agende sua consulta a qualquer momento, sem necessidade de ligar ou esperar.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-user-md"></i></div>
+                            <h3>Especialistas Qualificados</h3>
+                            <p>Nossa equipe médica é composta por profissionais altamente qualificados.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                            <h3>Pronto Atendimento</h3>
+                            <p>Atendimento rápido e eficiente para garantir seu bem-estar.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Página Quem Somos -->
+        <div class="page" id="about">
+            <section class="features">
+                <div class="container">
+                    <h2 class="section-title">Quem Somos</h2>
+                    <div class="form-container">
+                        <h3>Nossa História</h3>
+                        <p>A Clínica Saúde Total foi fundada em 2005 com o objetivo de oferecer atendimento médico de qualidade com foco no paciente. Ao longo dos anos, crescemos e nos tornamos referência em nossa região.</p>
+                        
+                        <h3>Nossa Missão</h3>
+                        <p>Proporcionar atendimento médico de excelência, com humanização, ética e compromisso com a saúde e bem-estar dos nossos pacientes.</p>
+                        
+                        <h3>Nossa Equipe</h3>
+                        <p>Contamos com mais de 30 profissionais especializados nas principais áreas da medicina, sempre em busca de atualização e melhorias para nossos pacientes.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Página de Agendamento -->
+        <div class="page" id="appointment">
+            <section class="features">
+                <div class="container">
+                    <h2 class="section-title">Agendamento de Consulta</h2>
+                    <div class="form-container">
+                        <form id="appointment-form">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="patient-name" class="required">Nome completo do paciente</label>
+                                        <input type="text" id="patient-name" placeholder="Digite seu nome completo" required>
+                                        <div class="error" id="name-error">Por favor, digite seu nome completo</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="birthdate" class="required">Data de nascimento</label>
+                                        <input type="date" id="birthdate" required>
+                                        <div class="error" id="birthdate-error">Por favor, informe sua data de nascimento</div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="health-plan">Número do cartão do plano de saúde</label>
+                                        <input type="text" id="health-plan" placeholder="Número do seu cartão" maxlength="20">
+                                        <div class="error" id="health-plan-error">Formato inválido do número do plano</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="phone" class="required">Telefone para contato</label>
+                                        <input type="tel" id="phone" placeholder="(11) 99999-9999" required>
+                                        <div class="error" id="phone-error">Digite um número de telefone válido</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="reason" class="required">Motivo da consulta</label>
+                                        <select id="reason" required>
+                                            <option value="">Selecione o motivo</option>
+                                            <option value="consulta-rotina">Consulta de rotina</option>
+                                            <option value="retorno">Retorno</option>
+                                            <option value="exame">Exame</option>
+                                            <option value="dor">Relato de dor</option>
+                                            <option value="outro">Outro motivo</option>
+                                        </select>
+                                        <div class="error" id="reason-error">Por favor, selecione o motivo da consulta</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="appointment-date" class="required">Data desejada</label>
+                                        <input type="date" id="appointment-date" required min="">
+                                        <div class="error" id="date-error">Por favor, selecione uma data válida</div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="appointment-time" class="required">Horário desejado</label>
+                                        <input type="time" id="appointment-time" required min="08:00" max="18:00">
+                                        <div class="error" id="time-error">Horário disponível: 8h às 18h</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="additional-info">Informações adicionais</label>
+                                        <textarea id="additional-info" rows="4" placeholder="Descreva qualquer informação relevante para a consulta"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn">Agendar Consulta</button>
+                                </div>
+                            </div>
+
+                            <div class="success-message" id="success-message">
+                                Agendamento realizado com sucesso! Em breve entraremos em contato para confirmar.
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Página CRUD -->
+        <div class="page" id="crud">
+            <section class="features">
+                <div class="container">
+                    <h2 class="section-title">Meus Agendamentos</h2>
+                    <div class="form-container">
+                        <div class="crud-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Paciente</th>
+                                        <th>Data</th>
+                                        <th>Horário</th>
+                                        <th>Motivo</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointments-table">
+                                    <tr>
+                                        <td>João Silva</td>
+                                        <td>15/09/2023</td>
+                                        <td>10:30</td>
+                                        <td>Consulta de rotina</td>
+                                        <td>
+                                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Maria Santos</td>
+                                        <td>16/09/2023</td>
+                                        <td>14:00</td>
+                                        <td>Retorno</td>
+                                        <td>
+                                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button class="btn" id="add-appointment">Novo Agendamento</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="logo"><i class="fas fa-heartbeat"></i> Saúde Total</div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                    <p>&copy; 2025 Clínica Saúde Total - Todos os direitos reservados</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>
