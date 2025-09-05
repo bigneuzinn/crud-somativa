@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Clínica Saúde Total</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-        <!-- Header com Navegação (visível apenas após login) -->
+    <!-- Header com Navegação (visível apenas após login) -->
     <header id="main-header" style="display: none;">
         <div class="container">
             <nav>
-                <div class="logo"><i class="fas fa-heartbeat"></i> Saúde Total</div>
+                <div class="logo">
+                    <img src="img/logotipo.jpg" alt="Saúde Total" class="logo-img">
+                    <span>Saúde Total</span>
+                </div>
                 <ul class="nav-links">
                     <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
                     <li><a href="#" class="nav-link" data-page="about">Quem Somos</a></li>
@@ -31,8 +35,8 @@
     <!-- Página de Login (inicialmente visível) -->
     <div class="login-container" id="login-page">
         <div class="login-box">
-            <div class="login-icon">
-                <i class="fas fa-lock"></i>
+            <div class="login-logo">
+                <img src="img/logotipo.jpg" alt="Saúde Total" class="logo-login">
             </div>
             <h2>Login - Clínica Saúde Total</h2>
             <form id="login-form">
@@ -53,8 +57,8 @@
     <!-- Página de Cadastro (inicialmente oculta) -->
     <div class="login-container" id="register-page" style="display: none;">
         <div class="login-box">
-            <div class="login-icon">
-                <i class="fas fa-user-plus"></i>
+            <div class="login-logo">
+                <img src="img/logotipo.jpg" alt="Saúde Total" class="logo-login">
             </div>
             <h2>Criar Conta</h2>
             <form id="register-form">
@@ -255,8 +259,8 @@
                                 </thead>
                                 <tbody id="appointments-table">
                                     <tr>
-                                        <td>João Silva</td>
-                                        <td>15/09/2023</td>
+                                        <td>João Victor</td>
+                                        <td>15/09/2025</td>
                                         <td>10:30</td>
                                         <td>Consulta de rotina</td>
                                         <td>
@@ -265,8 +269,8 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Maria Santos</td>
-                                        <td>16/09/2023</td>
+                                        <td>Laura mayumi</td>
+                                        <td>16/09/2025</td>
                                         <td>14:00</td>
                                         <td>Retorno</td>
                                         <td>
@@ -289,7 +293,10 @@
         <footer>
             <div class="container">
                 <div class="footer-content">
-                    <div class="logo"><i class="fas fa-heartbeat"></i> Saúde Total</div>
+                    <div class="logo">
+                        <img src="img/logotipo.jpg" alt="Saúde Total" class="logo-footer">
+                        <span>Saúde Total</span>
+                    </div>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
