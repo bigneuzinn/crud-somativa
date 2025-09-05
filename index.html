@@ -9,7 +9,6 @@
 </head>
 <body>
 
-    <!-- Header com Navegação (visível apenas após login) -->
     <header id="main-header" style="display: none;">
         <div class="container">
             <nav>
@@ -32,7 +31,6 @@
         </div>
     </header>
 
-    <!-- Página de Login (inicialmente visível) -->
     <div class="login-container" id="login-page">
         <div class="login-box">
             <div class="login-logo">
@@ -54,7 +52,6 @@
         </div>
     </div>
 
-    <!-- Página de Cadastro (inicialmente oculta) -->
     <div class="login-container" id="register-page" style="display: none;">
         <div class="login-box">
             <div class="login-logo">
@@ -83,15 +80,18 @@
         </div>
     </div>
 
-    <!-- Conteúdo Principal (visível apenas após login) -->
     <div id="main-content" style="display: none;">
-        <!-- Página Inicial -->
         <div class="page active" id="home">
             <section class="hero">
                 <div class="container">
-                    <h1>Bem-vindo à Clínica Saúde Total</h1>
-                    <p>Agende sua consulta de forma rápida e fácil com nosso sistema online. Cuide da sua saúde com praticidade.</p>
-                    <a href="#" class="btn btn-appointment">Agendar Consulta</a>
+                    <div class="hero-content">
+                        <h1>Bem-vindo à Clínica Saúde Total</h1>
+                        <p>Agende sua consulta de forma rápida e fácil com nosso sistema online. Cuide da sua saúde com praticidade.</p>
+                        <a href="#" class="btn btn-appointment">Agendar Consulta</a>
+                    </div>
+                    <div class="hero-image">
+                        <img src="img/medico-autonomo.gif" alt="gif de saúde">
+                    </div>
                 </div>
             </section>
 
@@ -119,26 +119,40 @@
             </section>
         </div>
 
-        <!-- Página Quem Somos -->
         <div class="page" id="about">
             <section class="features">
                 <div class="container">
-                    <h2 class="section-title">Quem Somos</h2>
-                    <div class="form-container">
-                        <h3>Nossa História</h3>
-                        <p>A Clínica Saúde Total foi fundada em 2005 com o objetivo de oferecer atendimento médico de qualidade com foco no paciente. Ao longo dos anos, crescemos e nos tornamos referência em nossa região.</p>
+                    <h2 class="section-title">Nossa História e Compromisso</h2>
+                    <div class="about-grid">
                         
-                        <h3>Nossa Missão</h3>
-                        <p>Proporcionar atendimento médico de excelência, com humanização, ética e compromisso com a saúde e bem-estar dos nossos pacientes.</p>
-                        
-                        <h3>Nossa Equipe</h3>
-                        <p>Contamos com mais de 30 profissionais especializados nas principais áreas da medicina, sempre em busca de atualização e melhorias para nossos pacientes.</p>
+                        <div class="about-card">
+                            <i class="fas fa-history"></i>
+                            <h3>Nossa História</h3>
+                            <p>
+                                A Clínica Saúde Total foi fundada em 2005 com o objetivo de oferecer atendimento médico de qualidade com foco no paciente. Ao longo dos anos, crescemos e nos tornamos referência em nossa região.
+                            </p>
+                        </div>
+
+                        <div class="about-card">
+                            <i class="fas fa-bullseye"></i>
+                            <h3>Nossa Missão</h3>
+                            <p>
+                                Proporcionar atendimento médico de excelência, com humanização, ética e compromisso com a saúde e bem-estar dos nossos pacientes.
+                            </p>
+                        </div>
+
+                        <div class="about-card">
+                            <i class="fas fa-users-cog"></i>
+                            <h3>Nossa Equipe</h3>
+                            <p>
+                                Contamos com mais de 30 profissionais especializados nas principais áreas da medicina, sempre em busca de atualização e melhorias para nossos pacientes.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
         </div>
 
-        <!-- Página de Agendamento -->
         <div class="page" id="appointment">
             <section class="features">
                 <div class="container">
@@ -240,7 +254,6 @@
             </section>
         </div>
 
-        <!-- Página CRUD -->
         <div class="page" id="crud">
             <section class="features">
                 <div class="container">
@@ -289,22 +302,38 @@
             </section>
         </div>
 
-        <!-- Footer -->
         <footer>
             <div class="container">
                 <div class="footer-content">
-                    <div class="logo">
-                        <img src="img/logotipo.jpg" alt="Saúde Total" class="logo-footer">
-                        <span>Saúde Total</span>
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <img src="img/logotipo.jpg" alt="Saúde Total" class="logo-footer">
+                            <span>Saúde Total</span>
+                        </div>
+                        <p>Cuidando de você com excelência e humanização. Sua saúde é a nossa prioridade.</p>
                     </div>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+
+                    <div class="footer-section">
+                        <h4>Navegação</h4>
+                        <ul class="footer-links-list">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Quem Somos</a></li>
+                            <li><a href="#">Serviços</a></li>
+                            <li><a href="#">Contato</a></li>
+                        </ul>
                     </div>
-                    <p>&copy; 2025 Clínica Saúde Total - Todos os direitos reservados</p>
+                    
+                    <div class="footer-section">
+                        <h4>Siga-nos</h4>
+                        <div class="social-links">
+                            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
                 </div>
+                <p style="text-align: center; margin-top: 2rem;">&copy; 2025 Clínica Saúde Total - Todos os direitos reservados</p>
             </div>
         </footer>
     </div>

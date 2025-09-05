@@ -249,20 +249,43 @@ input:focus, select:focus, textarea:focus {
     background: linear-gradient(to right, var(--primary-color), #4e9af1);
     color: var(--text-light);
     padding: 5rem 0;
-    text-align: center;
 }
 
-.hero h1 {
+.hero .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.hero-content {
+    flex: 2;
+    text-align: left;
+}
+
+.hero-content h1 {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1rem;
 }
 
-.hero p {
+.hero-content p {
     font-size: 1.25rem;
-    max-width: 700px;
-    margin: 0 auto 2rem;
+    margin-bottom: 2rem;
 }
+
+.hero-image {
+    flex: 1;
+    text-align: right;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
+}
+
 
 .section-title {
     text-align: center;
@@ -312,6 +335,43 @@ input:focus, select:focus, textarea:focus {
     margin-bottom: 0.5rem;
     color: var(--primary-color);
     font-weight: 600;
+}
+
+/* Estilo para a nova seção "Quem Somos" */
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.about-card {
+    background-color: var(--bg-white);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-5px);
+}
+
+.about-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.about-card p {
+    color: var(--text-dark);
+}
+
+.about-card i {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
 }
 
 /* --- Tabela CRUD --- */
@@ -369,13 +429,12 @@ tr:hover {
     color: white;
 }
 
-/* --- Footer --- */
+/* --- Footer Melhorado --- */
 
 footer {
-    background-color: var(--text-dark);
+    background-color: #343a40; /* Um cinza escuro mais elegante */
     color: var(--text-light);
-    padding: 2.5rem 0;
-    text-align: center;
+    padding: 3rem 0; /* Aumenta o espaçamento interno */
     margin-top: auto;
 }
 
@@ -383,26 +442,75 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    gap: 2rem; /* Adiciona espaçamento entre os elementos */
+}
+
+.footer-section {
+    flex: 1;
+    width: 100%;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.logo-footer {
+    height: 60px; /* Aumenta o tamanho do logo */
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.footer-logo span {
+    font-size: 1.8rem; /* Aumenta o tamanho do nome da clínica */
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.footer-links-list li a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links-list li a:hover {
+    color: var(--secondary-color);
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem; /* Aumenta o espaço entre os ícones */
+    margin-top: 1rem;
 }
 
 .social-links a {
     color: var(--text-light);
-    margin: 0 0.8rem;
-    font-size: 1.5rem;
-    transition: var(--transition-fast);
+    font-size: 1.8rem; /* Aumenta o tamanho dos ícones */
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .social-links a:hover {
-    color: var(--secondary-color);
-    transform: translateY(-3px);
+    color: var(--primary-color);
+    transform: scale(1.1);
 }
 
 footer p {
-    font-size: 0.9rem;
-    margin-top: 1rem;
+    font-size: 1rem;
+    margin-top: 2rem;
+    color: #b0b0b0; /* Um cinza mais claro para o texto de copyright */
 }
 
-/* --- Paginação e Mensagens --- */
+/* Paginação e Mensagens */
 .page {
     display: none;
     padding: 2rem 0;
@@ -423,7 +531,7 @@ footer p {
     display: none;
 }
 
-/* --- Responsividade --- */
+/* Responsividade */
 
 @media (max-width: 768px) {
     .nav-links {
@@ -441,5 +549,37 @@ footer p {
 
     .user-info span {
         display: none;
+    }
+
+    .hero .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hero-content {
+        flex: auto;
+        text-align: center;
+    }
+    
+    .hero-image {
+        margin-top: 2rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .footer-logo {
+        justify-content: flex-start;
+    }
+
+    .social-links {
+        justify-content: flex-end;
+        margin-top: 0;
     }
 }
