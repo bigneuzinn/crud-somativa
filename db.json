@@ -1,0 +1,30 @@
+{
+  "usuarios": [
+    {
+      "id": "f8c8",
+      "name": "Vinicius",
+      "email": "vinilucasfe@gmail.com",
+      "password": "20300615"
+    },
+    {
+      "id": "f7ee",
+      "name": "Laura",
+      "email": "lauraterukina@gmail.com",
+      "password": "123456789"
+    }
+  ],
+  "agendamentos": [
+    {
+      "id": "46f0",
+      "userEmail": "vinilucasfe@gmail.com",
+      "name": "Vinicius Lucas Felix dos Santos",
+      "birthdate": "2007-08-15",
+      "healthPlan": "123456",
+      "phone": "1178945612",
+      "reason": "exame",
+      "date": "2025-09-18",
+      "time": "17:30",
+      "additionalInfo": ""
+    }
+  ]
+}

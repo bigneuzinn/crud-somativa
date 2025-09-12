@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Seletores do DOM ---
-    // Páginas e seções principais
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
     const loginPage = document.getElementById('login-page');
@@ -9,53 +8,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainHeader = document.getElementById('main-header');
     const mainContent = document.getElementById('main-content');
     
-    // Links e botões de navegação
     const logoutBtn = document.getElementById('logout-btn');
     const usernameDisplay = document.getElementById('username-display');
     const showRegisterLink = document.getElementById('show-register');
     const showLoginLink = document.getElementById('show-login');
     const navLinks = document.querySelectorAll('.nav-link');
-    const heroAppointmentBtn = document.querySelector('.btn-appointment'); // Botão na seção principal
+    const heroAppointmentBtn = document.querySelector('.btn-appointment');
     
-    // Formulário de agendamento e elementos relacionados
     const appointmentForm = document.getElementById('appointment-form');
     const appointmentsTableBody = document.getElementById('appointments-table');
-    const addAppointmentBtn = document.getElementById('add-appointment'); // Botão "Novo Agendamento" da tabela
+    const addAppointmentBtn = document.getElementById('add-appointment');
     const successMessage = document.getElementById('success-message');
     const appointmentDateInput = document.getElementById('appointment-date');
     
-    // Campos de validação
     const registerPasswordInput = document.getElementById('register-password');
     const registerConfirmInput = document.getElementById('register-confirm');
     const confirmError = document.getElementById('confirm-error');
 
-    // Variável para controle de edição (se está editando ou criando um novo agendamento)
     let currentAppointmentId = null;
 
-    // --- Funções de Gerenciamento de Dados (LocalStorage) e Sessão (SessionStorage) ---
+    const API_URL = 'http://localhost:3000';
 
-    // Obtém o banco de dados de usuários do LocalStorage. Se não existir, cria um novo objeto.
-    function getDB() {
-        const db = localStorage.getItem('saudeTotalDB');
-        return db ? JSON.parse(db) : { usuarios: [] };
-    }
+    // --- Sessão e UI ---
 
-    // Salva o banco de dados no LocalStorage.
-    function saveDB(db) {
-        localStorage.setItem('saudeTotalDB', JSON.stringify(db));
-    }
-
-    // Verifica se há um usuário logado no SessionStorage ao carregar a página.
     function checkSession() {
-        const loggedInUser = sessionStorage.getItem('loggedInUser');
-        if (loggedInUser) {
-            showLoggedInUI(JSON.parse(loggedInUser));
+        const loggedInUser  = sessionStorage.getItem('loggedInUser ');
+        if (loggedInUser ) {
+            showLoggedInUI(JSON.parse(loggedInUser ));
         } else {
             showLoginUI();
         }
     }
 
-    // Exibe a interface principal da aplicação (após o login).
     function showLoggedInUI(user) {
         loginPage.style.display = 'none';
         registerPage.style.display = 'none';
@@ -63,10 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mainContent.style.display = 'block';
         usernameDisplay.textContent = user.name;
         renderAppointments(user.email);
-        showPage('home'); // Redireciona para a página inicial
+        showPage('home');
     }
 
-    // Exibe a interface de login/cadastro.
     function showLoginUI() {
         loginPage.style.display = 'flex';
         registerPage.style.display = 'none';
@@ -74,14 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
         mainContent.style.display = 'none';
     }
 
-    // Controla qual página do conteúdo principal está visível.
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(page => {
             page.classList.remove('active');
         });
         document.getElementById(pageId).classList.add('active');
 
-        // Atualiza a classe 'active' nos links de navegação
         navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.dataset.page === pageId) {
@@ -90,33 +71,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Eventos e Lógica dos Formulários ---
+    // --- Login ---
 
-    // Define a data mínima no campo de agendamento para a data atual.
-    const today = new Date().toISOString().split('T')[0];
-    appointmentDateInput.setAttribute('min', today);
-
-    // Lógica para o formulário de login
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const email = e.target.elements['login-email'].value;
+        const email = e.target.elements['login-email'].value.trim();
         const password = e.target.elements['login-password'].value;
-        const db = getDB();
-        const user = db.usuarios.find(u => u.email === email && u.password === password);
 
-        if (user) {
-            sessionStorage.setItem('loggedInUser', JSON.stringify(user));
-            showLoggedInUI(user);
-        } else {
-            alert('Email ou senha incorretos.');
-        }
+        fetch(`${API_URL}/usuarios?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
+            .then(res => res.json())
+            .then(users => {
+                if (users.length > 0) {
+                    const user = users[0];
+                    sessionStorage.setItem('loggedInUser ', JSON.stringify(user));
+                    showLoggedInUI(user);
+                } else {
+                    alert('Email ou senha incorretos.');
+                }
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'));
     });
 
-    // Lógica para o formulário de cadastro
+    // --- Cadastro ---
+
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const name = e.target.elements['register-name'].value;
-        const email = e.target.elements['register-email'].value;
+        const name = e.target.elements['register-name'].value.trim();
+        const email = e.target.elements['register-email'].value.trim();
         const password = registerPasswordInput.value;
         const confirmPassword = registerConfirmInput.value;
 
@@ -127,22 +108,36 @@ document.addEventListener('DOMContentLoaded', () => {
             confirmError.style.display = 'none';
         }
 
-        const db = getDB();
-        const userExists = db.usuarios.some(u => u.email === email);
-
-        if (userExists) {
-            alert('Este email já está cadastrado.');
-            return;
-        }
-
-        const newUser = { name, email, password, appointments: [] };
-        db.usuarios.push(newUser);
-        saveDB(db);
-        alert('Cadastro realizado com sucesso! Faça login para continuar.');
-        showLoginUI(); // Redireciona para a página de login
+        // Verifica se email já existe
+        fetch(`${API_URL}/usuarios?email=${encodeURIComponent(email)}`)
+            .then(res => res.json())
+            .then(users => {
+                if (users.length > 0) {
+                    alert('Este email já está cadastrado.');
+                } else {
+                    // Cria novo usuário
+                    const newUser  = { name, email, password };
+                    fetch(`${API_URL}/usuarios`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(newUser )
+                    })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Erro ao cadastrar usuário');
+                        return res.json();
+                    })
+                    .then(() => {
+                        alert('Cadastro realizado com sucesso! Faça login para continuar.');
+                        showLoginUI();
+                    })
+                    .catch(() => alert('Erro ao conectar com o servidor.'));
+                }
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'));
     });
 
-    // Alternar entre as páginas de login e cadastro
+    // --- Navegação entre login e cadastro ---
+
     showRegisterLink.addEventListener('click', (e) => {
         e.preventDefault();
         loginPage.style.display = 'none';
@@ -155,14 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
         registerPage.style.display = 'none';
     });
 
-    // Lógica do botão de logout
+    // --- Logout ---
+
     logoutBtn.addEventListener('click', () => {
-        sessionStorage.removeItem('loggedInUser');
+        sessionStorage.removeItem('loggedInUser ');
         showLoginUI();
-        window.location.reload(); // Recarrega a página para limpar o estado
+        window.location.reload();
     });
 
-    // Lógica de navegação para os links do menu
+    // --- Navegação do menu ---
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -170,17 +167,14 @@ document.addEventListener('DOMContentLoaded', () => {
             showPage(pageId);
 
             if (pageId === 'crud') {
-                const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
-                if (user) {
-                    renderAppointments(user.email);
-                }
+                const user = JSON.parse(sessionStorage.getItem('loggedInUser '));
+                if (user) renderAppointments(user.email);
             } else if (pageId === 'appointment') {
                 resetAppointmentForm();
             }
         });
     });
-    
-    // Lógica para o botão "Agendar Consulta" na seção Hero (home)
+
     if (heroAppointmentBtn) {
         heroAppointmentBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -189,91 +183,122 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Agendamento de Consultas (CRUD) ---
+    // --- Agendamento ---
 
-    // Lógica para submissão do formulário de agendamento (Criação e Atualização)
+    // Define data mínima para hoje
+    const today = new Date().toISOString().split('T')[0];
+    appointmentDateInput.setAttribute('min', today);
+
     appointmentForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-        if (!loggedInUser) {
+        const loggedInUser  = JSON.parse(sessionStorage.getItem('loggedInUser '));
+        if (!loggedInUser ) {
             alert('Você precisa estar logado para agendar uma consulta.');
             return;
         }
 
         const newAppointmentData = {
-            name: document.getElementById('patient-name').value,
+            userEmail: loggedInUser .email,
+            name: document.getElementById('patient-name').value.trim(),
             birthdate: document.getElementById('birthdate').value,
-            healthPlan: document.getElementById('health-plan').value,
-            phone: document.getElementById('phone').value,
+            healthPlan: document.getElementById('health-plan').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
             reason: document.getElementById('reason').value,
             date: document.getElementById('appointment-date').value,
             time: document.getElementById('appointment-time').value,
-            additionalInfo: document.getElementById('additional-info').value,
+            additionalInfo: document.getElementById('additional-info').value.trim(),
         };
 
-        const db = getDB();
-        const userIndex = db.usuarios.findIndex(u => u.email === loggedInUser.email);
-        const user = db.usuarios[userIndex];
-
-        if (userIndex !== -1) {
-            if (currentAppointmentId !== null) {
-                // Se `currentAppointmentId` tem um valor, é uma atualização
-                const appointmentIndex = user.appointments.findIndex(app => app.id === currentAppointmentId);
-                if (appointmentIndex !== -1) {
-                    user.appointments[appointmentIndex] = {
-                        id: currentAppointmentId,
-                        ...newAppointmentData
-                    };
-                }
-            } else {
-                // Caso contrário, é um novo agendamento
-                const newId = user.appointments.length > 0 ? Math.max(...user.appointments.map(app => app.id)) + 1 : 1;
-                user.appointments.push({
-                    id: newId,
-                    ...newAppointmentData
-                });
-            }
-
-            saveDB(db);
-            sessionStorage.setItem('loggedInUser', JSON.stringify(user));
-            
-            successMessage.style.display = 'block';
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-                showPage('crud');
-                renderAppointments(loggedInUser.email);
-                resetAppointmentForm();
-            }, 2000);
+        if (currentAppointmentId !== null) {
+            // Atualizar agendamento (PUT)
+            fetch(`${API_URL}/agendamentos/${currentAppointmentId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newAppointmentData)
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Erro ao atualizar agendamento');
+                return res.json();
+            })
+            .then(() => {
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    showPage('crud');
+                    renderAppointments(loggedInUser .email);
+                    resetAppointmentForm();
+                }, 2000);
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'));
+        } else {
+            // Criar novo agendamento (POST)
+            fetch(`${API_URL}/agendamentos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newAppointmentData)
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Erro ao criar agendamento');
+                return res.json();
+            })
+            .then(() => {
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    showPage('crud');
+                    renderAppointments(loggedInUser .email);
+                    resetAppointmentForm();
+                }, 2000);
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'));
         }
     });
 
-    // Preenche a tabela de agendamentos do usuário logado (Read)
-    function renderAppointments(userEmail) {
-        const db = getDB();
-        const user = db.usuarios.find(u => u.email === userEmail);
-        appointmentsTableBody.innerHTML = ''; // Limpa a tabela antes de preencher
+    // --- Renderizar agendamentos do usuário ---
 
-        if (user && user.appointments.length > 0) {
-            user.appointments.forEach(appointment => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${appointment.name}</td>
-                    <td>${appointment.date}</td>
-                    <td>${appointment.time}</td>
-                    <td>${appointment.reason}</td>
-                    <td>
-                        <button class="action-btn edit-btn" data-id="${appointment.id}"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn delete-btn" data-id="${appointment.id}"><i class="fas fa-trash"></i></button>
-                    </td>
-                `;
-                appointmentsTableBody.appendChild(row);
+    function renderAppointments(userEmail) {
+        fetch(`${API_URL}/agendamentos?userEmail=${encodeURIComponent(userEmail)}`)
+            .then(res => res.json())
+            .then(appointments => {
+                appointmentsTableBody.innerHTML = '';
+                if (appointments.length > 0) {
+                    appointments.forEach(appointment => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${appointment.name}</td>
+                            <td>${appointment.date}</td>
+                            <td>${appointment.time}</td>
+                            <td>${formatReason(appointment.reason)}</td>
+                            <td>
+                                <button class="action-btn edit-btn" data-id="${appointment.id}"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn" data-id="${appointment.id}"><i class="fas fa-trash"></i></button>
+                            </td>
+                        `;
+                        appointmentsTableBody.appendChild(row);
+                    });
+                } else {
+                    appointmentsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center;">Nenhum agendamento encontrado.</td></tr>`;
+                }
+            })
+            .catch(() => {
+                appointmentsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">Erro ao carregar agendamentos.</td></tr>`;
             });
-        } else {
-            appointmentsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center;">Nenhum agendamento encontrado.</td></tr>`;
+    }
+
+    // Formata o motivo para exibição legível
+    function formatReason(reason) {
+        switch(reason) {
+            case 'consulta-rotina': return 'Consulta de rotina';
+            case 'retorno': return 'Retorno';
+            case 'exame': return 'Exame';
+            case 'dor': return 'Relato de dor';
+            case 'outro': return 'Outro motivo';
+            default: return reason;
         }
     }
 
-    // Evento de clique para os botões de ação na tabela (Editar e Excluir)
+    // --- Editar agendamento ---
+
     appointmentsTableBody.addEventListener('click', (e) => {
         if (e.target.closest('.edit-btn')) {
             const id = parseInt(e.target.closest('.edit-btn').dataset.id);
@@ -286,57 +311,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lógica para preencher o formulário com dados de um agendamento para edição (Update)
     function editAppointment(id) {
-        const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-        if (!loggedInUser) return;
+        fetch(`${API_URL}/agendamentos/${id}`)
+            .then(res => {
+                if (!res.ok) throw new Error('Agendamento não encontrado');
+                return res.json();
+            })
+            .then(appointment => {
+                document.getElementById('patient-name').value = appointment.name;
+                document.getElementById('birthdate').value = appointment.birthdate;
+                document.getElementById('health-plan').value = appointment.healthPlan || '';
+                document.getElementById('phone').value = appointment.phone;
+                document.getElementById('reason').value = appointment.reason;
+                document.getElementById('appointment-date').value = appointment.date;
+                document.getElementById('appointment-time').value = appointment.time;
+                document.getElementById('additional-info').value = appointment.additionalInfo || '';
 
-        const db = getDB();
-        const user = db.usuarios.find(u => u.email === loggedInUser.email);
-        const appointment = user.appointments.find(app => app.id === id);
-
-        if (appointment) {
-            document.getElementById('patient-name').value = appointment.name;
-            document.getElementById('birthdate').value = appointment.birthdate;
-            document.getElementById('health-plan').value = appointment.healthPlan;
-            document.getElementById('phone').value = appointment.phone;
-            document.getElementById('reason').value = appointment.reason;
-            document.getElementById('appointment-date').value = appointment.date;
-            document.getElementById('appointment-time').value = appointment.time;
-            document.getElementById('additional-info').value = appointment.additionalInfo;
-
-            currentAppointmentId = id;
-            showPage('appointment');
-            window.scrollTo(0, 0); // Rola para o topo da página para facilitar a edição
-        }
+                currentAppointmentId = id;
+                showPage('appointment');
+                window.scrollTo(0, 0);
+            })
+            .catch(() => alert('Erro ao carregar agendamento para edição.'));
     }
 
-    // Lógica para excluir um agendamento (Delete)
+    // --- Deletar agendamento ---
+
     function deleteAppointment(id) {
-        const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-        if (!loggedInUser) return;
-
-        const db = getDB();
-        const user = db.usuarios.find(u => u.email === loggedInUser.email);
-        user.appointments = user.appointments.filter(app => app.id !== id);
-        saveDB(db);
-        sessionStorage.setItem('loggedInUser', JSON.stringify(user));
-        renderAppointments(loggedInUser.email);
+        fetch(`${API_URL}/agendamentos/${id}`, {
+            method: 'DELETE'
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Erro ao deletar agendamento');
+            const loggedInUser  = JSON.parse(sessionStorage.getItem('loggedInUser '));
+            renderAppointments(loggedInUser .email);
+        })
+        .catch(() => alert('Erro ao conectar com o servidor.'));
     }
 
-    // Limpa o formulário de agendamento e a variável de controle de edição
+    // --- Resetar formulário ---
+
     function resetAppointmentForm() {
         appointmentForm.reset();
         currentAppointmentId = null;
     }
-    
-    // Lógica para o botão "Novo Agendamento" na página Meus Agendamentos
+
     addAppointmentBtn.addEventListener('click', (e) => {
         e.preventDefault();
         showPage('appointment');
         resetAppointmentForm();
     });
 
-    // --- Inicialização da Aplicação ---
+    // --- Inicialização ---
+
     checkSession();
+
 });
