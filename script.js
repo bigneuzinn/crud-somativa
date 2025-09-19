@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Sessão e UI ---
 
     function checkSession() {
-        const loggedInUser  = sessionStorage.getItem('loggedInUser ');
+        const loggedInUser   = sessionStorage.getItem('loggedInUser ');
         if (loggedInUser ) {
             showLoggedInUI(JSON.parse(loggedInUser ));
         } else {
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('Este email já está cadastrado.');
                 } else {
                     // Cria novo usuário
-                    const newUser  = { name, email, password };
+                    const newUser   = { name, email, password };
                     fetch(`${API_URL}/usuarios`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -297,16 +297,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Editar agendamento ---
+    // --- Editar e Deletar agendamento ---
 
     appointmentsTableBody.addEventListener('click', (e) => {
-        if (e.target.closest('.edit-btn')) {
-            const id = parseInt(e.target.closest('.edit-btn').dataset.id);
-            editAppointment(id);
-        } else if (e.target.closest('.delete-btn')) {
-            const id = parseInt(e.target.closest('.delete-btn').dataset.id);
-            if (confirm('Tem certeza que deseja cancelar este agendamento?')) {
-                deleteAppointment(id);
+        const editBtn = e.target.closest('.edit-btn');
+        const deleteBtn = e.target.closest('.delete-btn');
+
+        if (editBtn) {
+            const id = editBtn.dataset.id;
+            if (id) {
+                console.log('Editar agendamento ID:', id);
+                editAppointment(id);
+            } else {
+                alert('ID do agendamento inválido para edição.');
+            }
+        } else if (deleteBtn) {
+            const id = deleteBtn.dataset.id;
+            if (id) {
+                if (confirm('Tem certeza que deseja cancelar este agendamento?')) {
+                    console.log('Deletar agendamento ID:', id);
+                    deleteAppointment(id);
+                }
+            } else {
+                alert('ID do agendamento inválido para exclusão.');
             }
         }
     });
@@ -333,8 +346,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(() => alert('Erro ao carregar agendamento para edição.'));
     }
-
-    // --- Deletar agendamento ---
 
     function deleteAppointment(id) {
         fetch(`${API_URL}/agendamentos/${id}`, {

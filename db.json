@@ -11,18 +11,48 @@
       "name": "Laura",
       "email": "lauraterukina@gmail.com",
       "password": "123456789"
+    },
+    {
+      "id": "85c2",
+      "name": "Ian Oliveira de Castro",
+      "email": "iancastro@gmail.com",
+      "password": "12345@"
     }
   ],
   "agendamentos": [
     {
-      "id": "46f0",
       "userEmail": "vinilucasfe@gmail.com",
       "name": "Vinicius Lucas Felix dos Santos",
       "birthdate": "2007-08-15",
       "healthPlan": "123456",
       "phone": "1178945612",
       "reason": "exame",
-      "date": "2025-09-18",
+      "date": "2025-09-20",
+      "time": "17:30",
+      "additionalInfo": "",
+      "id": "46f0"
+    },
+    {
+      "id": "b2d7",
+      "userEmail": "vinilucasfe@gmail.com",
+      "name": "Leonardo Porfirio",
+      "birthdate": "2007-09-19",
+      "healthPlan": "1232",
+      "phone": "33333333333",
+      "reason": "exame",
+      "date": "2025-10-20",
+      "time": "10:00",
+      "additionalInfo": "Dor de cabeça e dores no corpo"
+    },
+    {
+      "id": "3f07",
+      "userEmail": "vinilucasfe@gmail.com",
+      "name": "Ian oliveira de Castro",
+      "birthdate": "2025-09-20",
+      "healthPlan": "1232",
+      "phone": "33333333333",
+      "reason": "consulta-rotina",
+      "date": "2025-09-20",
       "time": "17:30",
       "additionalInfo": ""
     }
